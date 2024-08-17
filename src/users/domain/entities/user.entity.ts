@@ -1,4 +1,4 @@
-import { entity } from '@/shared/domain/entities/entity';
+import { Entity } from '@/shared/domain/entities/entity';
 
 export type UserTypes = {
   name: string;
@@ -7,7 +7,7 @@ export type UserTypes = {
   createdAt?: Date;
 };
 
-export class UserEntity extends entity<UserTypes> {
+export class UserEntity extends Entity<UserTypes> {
   constructor(
     public readonly props: UserTypes,
     id?: string,
