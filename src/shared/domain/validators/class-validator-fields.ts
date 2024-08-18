@@ -3,7 +3,6 @@ import {
   FieldsErros,
   ValidatorsFieldsInterface,
 } from './validator-fields.interface';
-import { error } from 'console';
 
 export abstract class ClassValidatorFields<PropsValidated>
   implements ValidatorsFieldsInterface<PropsValidated>
@@ -21,6 +20,6 @@ export abstract class ClassValidatorFields<PropsValidated>
     } else {
       this.validatedData = data;
     }
-    return !!error.length;
+    return !errors.length;
   }
 }

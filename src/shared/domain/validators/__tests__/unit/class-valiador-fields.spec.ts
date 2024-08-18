@@ -13,7 +13,7 @@ describe('ClassValidatorFields unit tests', () => {
     expect(sut.validatedData).toBeNull();
   });
 
-  it('Should validate with erros ', () => {
+  it('Should validate with erros', () => {
     const spyValidateSync = jest.spyOn(libClassValidator, 'validateSync'); // Verificando se o método validateSync existe no objeto todo.
     spyValidateSync.mockReturnValue([
       { property: 'field', constraints: { isRequired: 'tests error' } },
@@ -23,5 +23,15 @@ describe('ClassValidatorFields unit tests', () => {
     expect(spyValidateSync).toHaveBeenCalled();
     expect(sut.validatedData).toBeNull();
     expect(sut.erros).toStrictEqual({ field: ['tests error'] });
+  });
+
+  it('Should validate without erros', () => {
+    const spyValidateSync = jest.spyOn(libClassValidator, 'validateSync'); // Verificando se o método validateSync existe no objeto todo.
+    spyValidateSync.mockReturnValue([]);
+    const sut = new StubClassValidatorFields();
+    expect(sut.validate({ field: 'value' })).toBeTruthy();
+    expect(spyValidateSync).toHaveBeenCalled();
+    expect(sut.validatedData).toStrictEqual({ field: 'value' });
+    expect(sut.erros).toBeNull();
   });
 });
