@@ -51,7 +51,7 @@ describe('In Memory Repository unit tests', () => {
     );
   });
 
-  it('Should inserts a new entity', async () => {
+  it('Should update an entity', async () => {
     const entity = new StubEntity({ name: 'test name', price: 200 });
 
     await sut.insert(entity);
@@ -62,5 +62,20 @@ describe('In Memory Repository unit tests', () => {
 
     await sut.update(stubEntity);
     expect(stubEntity.toJSON()).toStrictEqual(sut.items[0].toJSON());
+  });
+
+  it('Should throw error when entity not found while using delete method', async () => {
+    await expect(sut.delete('fake id')).rejects.toThrow(
+      new NotFoundError('Entity not found'),
+    );
+  });
+
+  it('Should delete an entity', async () => {
+    const entity = new StubEntity({ name: 'test name', price: 200 });
+
+    await sut.insert(entity);
+    await sut.delete(entity.__id);
+
+    expect(sut.items).toHaveLength(0);
   });
 });
