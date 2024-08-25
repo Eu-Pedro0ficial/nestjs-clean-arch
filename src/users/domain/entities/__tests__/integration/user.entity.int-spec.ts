@@ -109,5 +109,13 @@ describe('User entity intregration testes', () => {
 
       expect(() => new UserEntity(props)).toThrow(EntityValidationError);
     });
+
+    it('Should is valid user', () => {
+      expect.assertions(0); // verifica quantas asserções você espera que tenha nesse teste após executado.
+      const props: UserTypes = {
+        ...UserDataBuilder({}),
+      };
+      new UserEntity(props);
+    });
   });
 });
