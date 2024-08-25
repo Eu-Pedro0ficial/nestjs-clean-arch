@@ -139,4 +139,29 @@ describe('User entity intregration testes', () => {
       entity.update('Other name');
     });
   });
+
+  describe('UpdatePassword method', () => {
+    it('Should a invalid user using invalid password field', () => {
+      const entity = new UserEntity(UserDataBuilder({}));
+      expect(() => entity.updatePassword(null as any)).toThrow(
+        EntityValidationError,
+      );
+      expect(() => entity.updatePassword('')).toThrow(EntityValidationError);
+      expect(() => entity.updatePassword(10 as any)).toThrow(
+        EntityValidationError,
+      );
+      expect(() => entity.updatePassword('a'.repeat(110))).toThrow(
+        EntityValidationError,
+      );
+    });
+
+    it('Should is valid user', () => {
+      expect.assertions(0); // verifica quantas asserções você espera que tenha nesse teste após executado.
+      const props: UserTypes = {
+        ...UserDataBuilder({}),
+      };
+      const entity = new UserEntity(props);
+      entity.updatePassword('Other password');
+    });
+  });
 });
