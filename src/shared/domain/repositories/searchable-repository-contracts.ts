@@ -173,8 +173,8 @@ export class SearchResult<E extends Entity, Filter = string> {
 
 export interface SearchableRepositoryInterface<
   E extends Entity,
-  SearchInput,
-  SearchOutput,
+  SearchParams,
+  SearchResult,
 > extends RepositoryInterface<E> {
-  search(props: SearchParams): Promise<SearchOutput>;
+  search(props: SearchParams): Promise<SearchResult>;
 }
