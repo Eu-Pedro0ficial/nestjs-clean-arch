@@ -1,7 +1,7 @@
 import { Entity } from '../entities/entity';
 import { RepositoryInterface } from './repository-contracts';
 
-export type SortDirection = 'asc' | 'desc';
+export type SortDirection = 'asc' | 'dsc';
 export type SearchProps<Filter = string> = {
   page?: number;
   perPage?: number;
@@ -26,23 +26,46 @@ export class SearchParams {
   }
 
   private set page(page: number) {
-    this.__page = page;
+    let __page = +page;
+
+    if (
+      Number.isNaN(__page) ||
+      __page <= 0 ||
+      parseInt(__page as any) !== __page
+    ) {
+      __page = 1;
+    }
+    this.__page = __page;
   }
 
   private set perPage(perPage: number) {
+    let __perPage = +perPage;
+
+    if (
+      Number.isNaN(__perPage) ||
+      __perPage <= 0 ||
+      parseInt(__perPage as any) !== __perPage
+    ) {
+      __perPage = this.__perPage;
+    }
     this.__perPage = perPage;
   }
 
   private set sort(sort: string | null) {
-    this.__sort = sort;
+    const conditions = sort === null || sort === undefined || sort === '';
+    this.__sort = conditions ? null : `${sort}`;
   }
 
   private set sortDir(sortDir: SortDirection | null) {
-    this.__sortDir = sortDir;
+    let __sortDir = `${sortDir}`.toLowerCase();
+    if (!this.__sort) __sortDir = null;
+    const condition = __sortDir !== 'asc' && __sortDir !== 'dsc';
+    this.__sortDir = condition ? 'dsc' : (__sortDir as SortDirection);
   }
 
   private set filter(filter: string | null) {
-    this.__filter = filter;
+    const conditions = filter === null || filter === undefined || filter === '';
+    this.__filter = conditions ? null : `${filter}`;
   }
 
   get page() {
