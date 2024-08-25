@@ -10,6 +10,16 @@ export type SearchProps<Filter = string> = {
   filter?: Filter;
 };
 
+export type SearchResultProps<E extends Entity, Filter> = {
+  items: E[];
+  total: number;
+  currentPage: number;
+  perPage: number;
+  sort: string | null;
+  sortDir: string | null;
+  filter: Filter | null;
+};
+
 export class SearchParams {
   protected __page: number;
   protected __perPage: number = 15;
@@ -89,6 +99,75 @@ export class SearchParams {
 
   get filter() {
     return this.__filter;
+  }
+}
+
+export class SearchResult<E extends Entity, Filter = string> {
+  readonly __items: E[];
+  readonly __total: number;
+  readonly __currentPage: number;
+  readonly __perPage: number;
+  readonly __sort: string | null;
+  readonly __sortDir: string | null;
+  readonly __filter: Filter | null;
+
+  readonly __lastPage: number;
+
+  constructor(props: SearchResultProps<E, Filter>) {
+    this.__items = props.items;
+    this.__total = props.total;
+    this.__currentPage = props.currentPage;
+    this.__perPage = props.perPage;
+    this.__sort = props.sort ?? null;
+    this.__sortDir = props.sortDir ?? null;
+    this.__filter = props.filter ?? null;
+
+    this.__lastPage = Math.ceil(this.total / this.perPage);
+  }
+
+  toJSON(forceEntity = false) {
+    return {
+      items: forceEntity ? this.items.map(item => item.toJSON()) : this.items,
+      total: this.total,
+      currentPage: this.perPage,
+      perPage: this.perPage,
+      sort: this.sort,
+      sortDir: this.sortDir,
+      filter: this.filter,
+      lastPage: this.lastPage,
+    };
+  }
+
+  get items() {
+    return this.__items;
+  }
+
+  get total() {
+    return this.__total;
+  }
+
+  get currentPage() {
+    return this.__currentPage;
+  }
+
+  get perPage() {
+    return this.__perPage;
+  }
+
+  get sort() {
+    return this.__sort;
+  }
+
+  get sortDir() {
+    return this.__sortDir;
+  }
+
+  get filter() {
+    return this.__filter;
+  }
+
+  get lastPage() {
+    return this.__lastPage;
   }
 }
 
