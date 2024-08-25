@@ -58,9 +58,12 @@ export class SearchParams {
 
   private set sortDir(sortDir: SortDirection | null) {
     let __sortDir = `${sortDir}`.toLowerCase();
-    if (!this.__sort) __sortDir = null;
     const condition = __sortDir !== 'asc' && __sortDir !== 'dsc';
-    this.__sortDir = condition ? 'dsc' : (__sortDir as SortDirection);
+
+    if (condition) __sortDir = 'dsc';
+    if (!this.sort) __sortDir = null;
+
+    this.__sortDir = __sortDir as SortDirection;
   }
 
   private set filter(filter: string | null) {
