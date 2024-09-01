@@ -10,9 +10,7 @@ export abstract class InMemorySearchableRepository<E extends Entity>
   extends InMemoryRepository<E>
   implements SearchableRepositoryInterface<E, any, any>
 {
-  async search(props: SearchParams): Promise<SearchResult<E>> {
-    throw new Error('Method not implemented.');
-  }
+  async search(props: SearchParams): Promise<SearchResult<E>> {}
 
   protected abstract applyFilter(
     items: E[],
@@ -23,15 +21,11 @@ export abstract class InMemorySearchableRepository<E extends Entity>
     items: E[],
     filter: string | null,
     sortDir: string | null,
-  ): Promise<E[]> {
-
-  }
+  ): Promise<E[]> {}
 
   protected async applyPaginate(
     items: E[],
     page: SearchParams['page'],
     perPage: SearchParams['perPage'],
-  ): Promise<E[]> {
-
-  }
+  ): Promise<E[]> {}
 }

@@ -1,4 +1,7 @@
-import { SearchParams } from '../../searchable-repository-contracts';
+import {
+  SearchParams,
+  SearchResult,
+} from '../../searchable-repository-contracts';
 
 describe('Searchable Repository', () => {
   describe('Search Params unit tests', () => {
@@ -147,6 +150,76 @@ describe('Searchable Repository', () => {
           param.expected,
         );
       });
+    });
+  });
+
+  describe('SearchResult Params', () => {
+    it('constructor props', () => {
+      let sut = new SearchResult({
+        items: ['test1', 'test2', 'test3', 'test4'] as any,
+        total: 4,
+        currentPage: 1,
+        perPage: 2,
+        sort: null,
+        sortDir: null,
+        filter: null,
+      });
+
+      expect(sut.toJSON()).toStrictEqual({
+        items: ['test1', 'test2', 'test3', 'test4'] as any,
+        total: 4,
+        currentPage: 1,
+        lastPage: 2,
+        perPage: 2,
+        sort: null,
+        sortDir: null,
+        filter: null,
+      });
+
+      sut = new SearchResult({
+        items: ['test1', 'test2', 'test3', 'test4'] as any,
+        total: 4,
+        currentPage: 1,
+        perPage: 2,
+        sort: 'name',
+        sortDir: 'asc',
+        filter: 'teste',
+      });
+
+      expect(sut.toJSON()).toStrictEqual({
+        items: ['test1', 'test2', 'test3', 'test4'] as any,
+        total: 4,
+        currentPage: 1,
+        lastPage: 2,
+        perPage: 2,
+        sort: 'name',
+        sortDir: 'asc',
+        filter: 'teste',
+      });
+
+      sut = new SearchResult({
+        items: ['test1', 'test2', 'test3', 'test4'] as any,
+        total: 4,
+        currentPage: 1,
+        perPage: 10,
+        sort: 'name',
+        sortDir: 'asc',
+        filter: 'teste',
+      });
+
+      expect(sut.lastPage).toStrictEqual(1);
+
+      sut = new SearchResult({
+        items: ['test1', 'test2', 'test3', 'test4'] as any,
+        total: 54,
+        currentPage: 1,
+        perPage: 10,
+        sort: 'name',
+        sortDir: 'asc',
+        filter: 'teste',
+      });
+
+      expect(sut.lastPage).toStrictEqual(6);
     });
   });
 });
